@@ -5,6 +5,7 @@ from django.db import models
 class User(AbstractUser):
     username = None
     email = models.EmailField(unique=True)
+    is_employee = models.BooleanField(default=False, verbose_name="Is employee")
 
 
     class Meta:
