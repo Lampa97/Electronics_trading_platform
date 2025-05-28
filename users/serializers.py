@@ -10,6 +10,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ["id", "email", "password", "is_employee"]
 
+
 class EmployeeStatusUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User

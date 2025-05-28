@@ -1,12 +1,11 @@
 from rest_framework import generics, views
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from .models import User
-from .serializers import UserSerializer, UserTokenObtainPairSerializer, EmployeeStatusUpdateSerializer
-from .permissions import IsActiveEmployee, IsAdmin
+from .permissions import IsAdmin
+from .serializers import EmployeeStatusUpdateSerializer, UserSerializer, UserTokenObtainPairSerializer
 
 
 class UserCreateAPIView(generics.CreateAPIView):
@@ -47,6 +46,7 @@ class EmployeeStatusUpdateAPIView(views.APIView):
         user.is_employee = True
         user.save()
         return Response({"status": "Employee status updated successfully"})
+
 
 class UsersListAPIView(generics.ListAPIView):
     queryset = User.objects.all()
