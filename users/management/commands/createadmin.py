@@ -9,5 +9,6 @@ class Command(BaseCommand):
         user.set_password("adminpass")
         user.is_staff = True
         user.is_superuser = True
+        user.is_employee = True
         user.save()
         self.stdout.write(self.style.SUCCESS(f"Successfully created admin user {user.email}"))

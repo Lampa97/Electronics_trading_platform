@@ -48,6 +48,18 @@ class EmployeeStatusUpdateAPIView(views.APIView):
         user.save()
         return Response({"status": "Employee status updated successfully"})
 
+class UsersListAPIView(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = (IsAdmin,)
+
+
+class EmployeeListAPIView(generics.ListAPIView):
+    queryset = User.objects.filter(is_employee=True)
+    serializer_class = UserSerializer
+    permission_classes = (IsAdmin,)
+
+
 class UserTokenObtainPairView(TokenObtainPairView):
     serializer_class = UserTokenObtainPairSerializer
     permission_classes = [AllowAny]
