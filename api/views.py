@@ -5,8 +5,8 @@ from .serializers import ContactSerializer, ProductSerializer, SalesNetworkCellS
 from .paginators import CustomPagination
 from .models import Contact, Product, SalesNetworkCell
 
-class ContactListCreateView(generics.ListCreateAPIView):
-    """View to list and create contacts.
+class ContactListView(generics.ListAPIView):
+    """View to list contacts.
     Allows filtering by country."""
     serializer_class = ContactSerializer
     pagination_class = CustomPagination
@@ -16,34 +16,58 @@ class ContactListCreateView(generics.ListCreateAPIView):
     def get_queryset(self):
         return Contact.objects.all()
 
+class ContactCreateView(generics.CreateAPIView):
+    """View to create contacts."""
+    serializer_class = ContactSerializer
 
-class ContactDetailUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
-    """View to retrieve, update, or delete a specific contact."""
+
+class ContactDetailView(generics.RetrieveUAPIView):
+    """View to retrieve a specific contact."""
     serializer_class = ContactSerializer
 
     def get_queryset(self):
         return Contact.objects.all()
 
+class ContactUpdateView(generics.UpdateAPIView):
+    """View to update a specific contact."""
+    serializer_class = ContactSerializer
 
-class ProductListCreateView(generics.ListCreateAPIView):
-    """View to list and create products."""
+class ContactDeleteView(generics.DestroyAPIView):
+    """View to delete a specific contact."""
+    serializer_class = ContactSerializer
+
+
+class ProductListView(generics.ListAPIView):
+    """View to list products."""
     serializer_class = ProductSerializer
     pagination_class = CustomPagination
 
     def get_queryset(self):
         return Product.objects.all()
 
+class ProductCreateView(generics.CreateAPIView):
+    """View to create products."""
+    serializer_class = ProductSerializer
 
-class ProductDetailUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
-    """View to retrieve, update, or delete a specific product."""
+
+class ProductDetailView(generics.RetrieveAPIView):
+    """View to retrieve a specific product."""
     serializer_class = ProductSerializer
 
     def get_queryset(self):
         return Product.objects.all()
 
+class ProductUpdateView(generics.UpdateAPIView):
+    """View to update a specific product."""
+    serializer_class = ProductSerializer
 
-class SalesNetworkCellListCreateView(generics.ListCreateAPIView):
-    """View to list and create sales network cells.
+class ProductDeleteView(generics.DestroyAPIView):
+    """View to delete a specific product."""
+    serializer_class = ProductSerializer
+
+
+class SalesNetworkCellListView(generics.ListAPIView):
+    """View to list sales network cells.
     Allows filtering by contact's country."""
     serializer_class = SalesNetworkCellSerializer
     pagination_class = CustomPagination
@@ -53,13 +77,21 @@ class SalesNetworkCellListCreateView(generics.ListCreateAPIView):
     def get_queryset(self):
         return SalesNetworkCell.objects.all()
 
+class SalesNetworkCellCreateView(generics.CreateAPIView):
+    """View to create sales network cells."""
+    serializer_class = SalesNetworkCellSerializer
 
-class SalesNetworkCellDetailDeleteView(generics.RetrieveDestroyAPIView):
-    """View to retrieve or delete a specific sales network cell."""
+
+class SalesNetworkCellDetailView(generics.RetrieveAPIView):
+    """View to retrieve  a specific sales network cell."""
     serializer_class = SalesNetworkCellSerializer
 
     def get_queryset(self):
         return SalesNetworkCell.objects.all()
+
+class SalesNetworkCellDestroyView(generics.DestroyAPIView):
+    """View to delete a specific sales network cell."""
+    serializer_class = SalesNetworkCellSerializer
 
 
 class SalesNetworkCellUpdateView(generics.UpdateAPIView):
