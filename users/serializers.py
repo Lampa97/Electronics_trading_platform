@@ -8,7 +8,7 @@ class UserSerializer(serializers.ModelSerializer):
     """ Serializer for creating and updating user accounts. """
     class Meta:
         model = User
-        fields = ["id", "email", "password", "is_employee"]
+        fields = ["id", "email", "is_employee"]
 
 
 class EmployeeStatusUpdateSerializer(serializers.ModelSerializer):
