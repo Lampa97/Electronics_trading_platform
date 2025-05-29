@@ -3,6 +3,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 
 class SalesNetworkCell(models.Model):
+    """Model representing a cell in the sales network hierarchy."""
     LEVEL_CHOICES = [
         ("Factory", "Factory"),
         ("Retail Network", "Retail Network"),
@@ -46,6 +47,7 @@ class SalesNetworkCell(models.Model):
 
 
 class Contact(models.Model):
+    """Model representing contact information for a sales network cell."""
     email = models.EmailField(max_length=254, verbose_name="Email")
     country = models.CharField(max_length=100, verbose_name="Country")
     city = models.CharField(max_length=100, verbose_name="City")
@@ -61,6 +63,7 @@ class Contact(models.Model):
         return f"{self.email} - {self.city}, {self.street} {self.house_number}"
 
 class Product(models.Model):
+    """Model representing a product in the sales network."""
     name = models.CharField(max_length=100, verbose_name="Product Name")
     model = models.CharField(max_length=100, verbose_name="Model", null=True, blank=True)
     release_date = models.DateField(verbose_name="Release Date", null=True, blank=True)
