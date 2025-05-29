@@ -79,22 +79,23 @@ python manage.py createadmin (using command from users application)
 | `/users/token/`                | `POST`     | Obtain JWT token.                            | Public          |
 
 ### `api` Application Routes
-| **Route**                     | **Method** | **Description**                              | **Permissions** |
-|--------------------------------|------------|----------------------------------------------|-----------------|
-| `/api/contact/`                | `GET`      | List all contacts.                           | Admin/Employee      |
-| `/api/contact/<id>/`           | `GET`      | Retrieve a specific contact.                 | Admin/Employee       |
-| `/api/contact/<id>/update/`    | `PATCH`    | Update a specific contact.                   | Admin/Employee       |
-| `/api/contact/<id>/destroy/`   | `DELETE`   | Delete a specific contact.                   | Admin/Employee       |
-| `/api/product/`                | `GET`      | List all products.                           | Admin/Employee       |
-| `/api/product/create/`         | `POST`     | Create a new product.                        | Admin/Employee       |
-| `/api/product/<id>/`           | `GET`      | Retrieve a specific product.                 | Admin/Employee       |
-| `/api/product/<id>/update/`    | `PATCH`    | Update a specific product.                   | Admin/Employee       |
-| `/api/product/<id>/destroy/`   | `DELETE`   | Delete a specific product.                   | Admin/Employee       |
-| `/api/cell/`                   | `GET`      | List all sales network cells.                | Admin/Employee       |
-| `/api/cell/create/`            | `POST`     | Create a new sales network cell.             | Admin/Employee       |
-| `/api/cell/<id>/`              | `GET`      | Retrieve a specific sales network cell.      | Admin/Employee       |
-| `/api/cell/<id>/update/`       | `PATCH`    | Update a specific sales network cell.        | Admin/Employee       |
-| `/api/cell/<id>/destroy/`      | `DELETE`   | Delete a specific sales network cell.        | Admin/Employee      |
+| **Route**          | **Method** | **Description**                                       | **Permissions** |
+|--------------------|------------|-------------------------------------------------------|-----------------|
+| `/contact/`        | `GET`      | List all contacts.                                    | Admin/Employee      |
+| `/contact/<id>/`   | `GET`      | Retrieve a specific contact.                          | Admin/Employee       |
+| `/contact/<id>/update/` | `PATCH`    | Update a specific contact.                            | Admin/Employee       |
+| `/contact/<id>/destroy/` | `DELETE`   | Delete a specific contact.                            | Admin/Employee       |
+| `/product/`        | `GET`      | List all products.                                    | Admin/Employee       |
+| `/product/create/` | `POST`     | Create a new product.                                 | Admin/Employee       |
+| `/product/<id>/`   | `GET`      | Retrieve a specific product.                          | Admin/Employee       |
+| `/product/<id>/update/` | `PATCH`    | Update a specific product.                            | Admin/Employee       |
+| `/product/<id>/destroy/` | `DELETE`   | Delete a specific product.                            | Admin/Employee       |
+| `/cell/`           | `GET`      | List all sales network cells.                         | Admin/Employee       |
+ | `/cell/?country=<country>` | `GET`      | Filter sales network cells by country (from Contact). | Admin/Employee  |
+ | `/cell/create/`    | `POST`     | Create a new sales network cell.                      | Admin/Employee       |
+| `/cell/<id>/`      | `GET`      | Retrieve a specific sales network cell.               | Admin/Employee       |
+| `/cell/<id>/update/` | `PATCH`    | Update a specific sales network cell.                 | Admin/Employee       |
+| `/cell/<id>/destroy/` | `DELETE`   | Delete a specific sales network cell.                 | Admin/Employee      |
 
 ---
 
