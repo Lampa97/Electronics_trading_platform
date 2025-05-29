@@ -27,4 +27,4 @@ class SalesNetworkCellSerializer(serializers.ModelSerializer):
     class Meta:
         model = SalesNetworkCell
         fields = "__all__"
-        read_only_fields = ("created_at",)
+        read_only_fields = ("created_at", "hierarchy_level", "contact", "products")

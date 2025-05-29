@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from .models import User
-from .permissions import IsAdmin
+from .permissions import IsAdmin, IsActiveEmployee
 from .serializers import EmployeeStatusUpdateSerializer, UserSerializer, UserTokenObtainPairSerializer
 
 

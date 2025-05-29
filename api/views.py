@@ -21,7 +21,7 @@ class ContactCreateView(generics.CreateAPIView):
     serializer_class = ContactSerializer
 
 
-class ContactDetailView(generics.RetrieveUAPIView):
+class ContactDetailView(generics.RetrieveAPIView):
     """View to retrieve a specific contact."""
     serializer_class = ContactSerializer
 
@@ -102,7 +102,32 @@ class SalesNetworkCellUpdateView(generics.UpdateAPIView):
         return SalesNetworkCell.objects.all()
 
     def update(self, request, *args, **kwargs):
-        """Override the update method to prevent updating the 'debt' field via put or patch request."""
+        """Override the update method to prevent updating the 'debt' field via put or patch request.
+        The 'debt' field can only be updated in the admin panel.
+        Allowing updates to 'contact' and 'products' fields."""
         if "debt" in request.data:
             raise ValidationError({"debt": "This field can be updated only in admin panel."})
+        instance = self.get_object()
+
+        # Handle contact update
+        contact_id = request.data.get("contact")
+        if contact_id:
+            try:
+                contact_instance = Contact.objects.get(id=contact_id)
+                instance.contact = contact_instance
+            except Contact.DoesNotExist:
+                raise ValidationError({"contact": "Invalid contact ID."})
+
+        # Handle products update
+        product_ids = request.data.get("products")
+        if product_ids:
+            try:
+                product_instances = Product.objects.filter(id__in=product_ids)
+                instance.products.set(product_instances)
+            except Product.DoesNotExist:
+                raise ValidationError({"products": "One or more product IDs are invalid."})
+
+        # Save the updated instance
+        instance.save()
+
         return super().update(request, *args, **kwargs)

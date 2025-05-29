@@ -13,11 +13,10 @@ class SalesNetworkCell(models.Model):
 
     name = models.CharField(max_length=100, verbose_name="Cell Name")
     hierarchy_level = models.PositiveIntegerField(
-        verbose_name="Hierarchy Level", validators=[MinValueValidator(0), MaxValueValidator(2)]
-    )
+        verbose_name="Hierarchy Level", validators=[MinValueValidator(0), MaxValueValidator(2)])
     hierarchy_name = models.CharField(max_length=100, choices=LEVEL_CHOICES, verbose_name="Hierarchy Name", blank=True)
-    contact = models.OneToOneField("Contact", on_delete=models.CASCADE, verbose_name="Contact Information")
-    products = models.ManyToManyField("Product", blank=True, verbose_name="Products")
+    contact = models.OneToOneField("Contact", on_delete=models.CASCADE, verbose_name="Contact Information", null=True, blank=True)
+    products = models.ManyToManyField("Product", blank=True, null=True, verbose_name="Products")
     supplier = models.ForeignKey("self", null=True, blank=True, on_delete=models.SET_NULL, verbose_name="Supplier")
     debt = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Debt", default=0.00)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created At")
