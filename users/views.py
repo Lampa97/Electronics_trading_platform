@@ -9,6 +9,7 @@ from .serializers import EmployeeStatusUpdateSerializer, UserSerializer, UserTok
 
 
 class UserCreateAPIView(generics.CreateAPIView):
+    """API view to create a new user account."""
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
@@ -25,6 +26,7 @@ class UserCreateAPIView(generics.CreateAPIView):
 
 
 class EmployeeStatusUpdateAPIView(views.APIView):
+    """API view to update the employee status of a user."""
     serializer_class = EmployeeStatusUpdateSerializer
     permission_classes = (IsAdmin,)
 
@@ -49,18 +51,21 @@ class EmployeeStatusUpdateAPIView(views.APIView):
 
 
 class UsersListAPIView(generics.ListAPIView):
+    """API view to list all users. Only accessible by admin users."""
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (IsAdmin,)
 
 
 class EmployeeListAPIView(generics.ListAPIView):
+    """API view to list all employees. Only accessible by admin users."""
     queryset = User.objects.filter(is_employee=True)
     serializer_class = UserSerializer
     permission_classes = (IsAdmin,)
 
 
 class UserTokenObtainPairView(TokenObtainPairView):
+    """Custom view to obtain JWT token with additional user information."""
     serializer_class = UserTokenObtainPairSerializer
     permission_classes = [AllowAny]
 
