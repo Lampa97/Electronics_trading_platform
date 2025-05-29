@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Contact, SalesNetworkCell, Product
+from .models import Contact, Product, SalesNetworkCell
 
 
 class ContactSerializer(serializers.ModelSerializer):
@@ -21,6 +21,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
 class SalesNetworkCellSerializer(serializers.ModelSerializer):
     """Serializer for SalesNetworkCell model."""
+
     contact = ContactSerializer(read_only=True)
     products = ProductSerializer(many=True, read_only=True)
 

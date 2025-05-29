@@ -1,13 +1,16 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics
 from rest_framework.exceptions import ValidationError
-from .serializers import ContactSerializer, ProductSerializer, SalesNetworkCellSerializer
-from .paginators import CustomPagination
+
 from .models import Contact, Product, SalesNetworkCell
+from .paginators import CustomPagination
+from .serializers import ContactSerializer, ProductSerializer, SalesNetworkCellSerializer
+
 
 class ContactListView(generics.ListAPIView):
     """View to list contacts.
     Allows filtering by country."""
+
     serializer_class = ContactSerializer
     pagination_class = CustomPagination
     filter_backends = [DjangoFilterBackend]
@@ -16,59 +19,79 @@ class ContactListView(generics.ListAPIView):
     def get_queryset(self):
         return Contact.objects.all()
 
+
 class ContactCreateView(generics.CreateAPIView):
     """View to create contacts."""
+
     serializer_class = ContactSerializer
 
 
 class ContactDetailView(generics.RetrieveAPIView):
     """View to retrieve a specific contact."""
+
     serializer_class = ContactSerializer
 
     def get_queryset(self):
         return Contact.objects.all()
 
+
 class ContactUpdateView(generics.UpdateAPIView):
     """View to update a specific contact."""
+
     serializer_class = ContactSerializer
+    queryset = Contact.objects.all()
+
 
 class ContactDeleteView(generics.DestroyAPIView):
     """View to delete a specific contact."""
+
     serializer_class = ContactSerializer
+    queryset = Contact.objects.all()
 
 
 class ProductListView(generics.ListAPIView):
     """View to list products."""
+
     serializer_class = ProductSerializer
     pagination_class = CustomPagination
 
     def get_queryset(self):
         return Product.objects.all()
 
+
 class ProductCreateView(generics.CreateAPIView):
     """View to create products."""
+
     serializer_class = ProductSerializer
 
 
 class ProductDetailView(generics.RetrieveAPIView):
     """View to retrieve a specific product."""
+
     serializer_class = ProductSerializer
 
     def get_queryset(self):
         return Product.objects.all()
 
+
 class ProductUpdateView(generics.UpdateAPIView):
     """View to update a specific product."""
+
     serializer_class = ProductSerializer
+    queryset = Product.objects.all()
+
 
 class ProductDeleteView(generics.DestroyAPIView):
     """View to delete a specific product."""
+
     serializer_class = ProductSerializer
+    queryset = Product.objects.all()
 
 
 class SalesNetworkCellListView(generics.ListAPIView):
     """View to list sales network cells.
     Allows filtering by contact's country."""
+
     serializer_class = SalesNetworkCellSerializer
     pagination_class = CustomPagination
     filter_backends = [DjangoFilterBackend]
@@ -77,25 +100,32 @@ class SalesNetworkCellListView(generics.ListAPIView):
     def get_queryset(self):
         return SalesNetworkCell.objects.all()
 
+
 class SalesNetworkCellCreateView(generics.CreateAPIView):
     """View to create sales network cells."""
+
     serializer_class = SalesNetworkCellSerializer
 
 
 class SalesNetworkCellDetailView(generics.RetrieveAPIView):
     """View to retrieve  a specific sales network cell."""
+
     serializer_class = SalesNetworkCellSerializer
 
     def get_queryset(self):
         return SalesNetworkCell.objects.all()
 
+
 class SalesNetworkCellDestroyView(generics.DestroyAPIView):
     """View to delete a specific sales network cell."""
+
     serializer_class = SalesNetworkCellSerializer
+    queryset = SalesNetworkCell.objects.all()
 
 
 class SalesNetworkCellUpdateView(generics.UpdateAPIView):
     """View to update a specific sales network cell."""
+
     serializer_class = SalesNetworkCellSerializer
 
     def get_queryset(self):
@@ -121,11 +151,12 @@ class SalesNetworkCellUpdateView(generics.UpdateAPIView):
         # Handle products update
         product_ids = request.data.get("products")
         if product_ids:
-            try:
-                product_instances = Product.objects.filter(id__in=product_ids)
-                instance.products.set(product_instances)
-            except Product.DoesNotExist:
-                raise ValidationError({"products": "One or more product IDs are invalid."})
+            existing_product_ids = set(Product.objects.filter(id__in=product_ids).values_list("id", flat=True))
+            invalid_ids = set(product_ids) - existing_product_ids
+            if invalid_ids:
+                raise ValidationError({"products": f"Invalid product IDs: {', '.join(map(str, invalid_ids))}"})
+            product_instances = Product.objects.filter(id__in=product_ids)
+            instance.products.add(*product_instances)
 
         # Save the updated instance
         instance.save()

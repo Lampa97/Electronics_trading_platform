@@ -1,21 +1,25 @@
+from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-from django.core.exceptions import ValidationError
+
 
 class SalesNetworkCell(models.Model):
     """Model representing a cell in the sales network hierarchy."""
+
     LEVEL_CHOICES = [
         ("Factory", "Factory"),
         ("Retail Network", "Retail Network"),
         ("Individual Entrepreneur", "Individual Entrepreneur"),
     ]
 
-
     name = models.CharField(max_length=100, verbose_name="Cell Name")
     hierarchy_level = models.PositiveIntegerField(
-        verbose_name="Hierarchy Level", validators=[MinValueValidator(0), MaxValueValidator(2)])
+        verbose_name="Hierarchy Level", validators=[MinValueValidator(0), MaxValueValidator(2)]
+    )
     hierarchy_name = models.CharField(max_length=100, choices=LEVEL_CHOICES, verbose_name="Hierarchy Name", blank=True)
-    contact = models.OneToOneField("Contact", on_delete=models.CASCADE, verbose_name="Contact Information", null=True, blank=True)
+    contact = models.OneToOneField(
+        "Contact", on_delete=models.CASCADE, verbose_name="Contact Information", null=True, blank=True
+    )
     products = models.ManyToManyField("Product", blank=True, null=True, verbose_name="Products")
     supplier = models.ForeignKey("self", null=True, blank=True, on_delete=models.SET_NULL, verbose_name="Supplier")
     debt = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Debt", default=0.00)
@@ -47,6 +51,7 @@ class SalesNetworkCell(models.Model):
 
 class Contact(models.Model):
     """Model representing contact information for a sales network cell."""
+
     email = models.EmailField(max_length=254, verbose_name="Email")
     country = models.CharField(max_length=100, verbose_name="Country")
     city = models.CharField(max_length=100, verbose_name="City")
@@ -61,8 +66,10 @@ class Contact(models.Model):
     def __str__(self):
         return f"{self.email} - {self.city}, {self.street} {self.house_number}"
 
+
 class Product(models.Model):
     """Model representing a product in the sales network."""
+
     name = models.CharField(max_length=100, verbose_name="Product Name")
     model = models.CharField(max_length=100, verbose_name="Model", null=True, blank=True)
     release_date = models.DateField(verbose_name="Release Date", null=True, blank=True)

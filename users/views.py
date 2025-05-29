@@ -4,12 +4,13 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from .models import User
-from .permissions import IsAdmin, IsActiveEmployee
+from .permissions import IsAdmin
 from .serializers import EmployeeStatusUpdateSerializer, UserSerializer, UserTokenObtainPairSerializer
 
 
 class UserCreateAPIView(generics.CreateAPIView):
     """API view to create a new user account."""
+
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
@@ -27,6 +28,7 @@ class UserCreateAPIView(generics.CreateAPIView):
 
 class EmployeeStatusUpdateAPIView(views.APIView):
     """API view to update the employee status of a user."""
+
     serializer_class = EmployeeStatusUpdateSerializer
     permission_classes = (IsAdmin,)
 
@@ -39,19 +41,25 @@ class EmployeeStatusUpdateAPIView(views.APIView):
                 user = User.objects.get(id=user_id)
             except User.DoesNotExist:
                 return Response({"error": "User not found"}, status=404)
+            else:
+                user.is_employee = True
+                user.save()
+                return Response({"status": "Employee status updated successfully"})
         elif email:
             try:
                 user = User.objects.get(email=email)
             except User.DoesNotExist:
                 return Response({"error": "User not found"}, status=404)
-
-        user.is_employee = True
-        user.save()
-        return Response({"status": "Employee status updated successfully"})
+            else:
+                user.is_employee = True
+                user.save()
+                return Response({"status": "Employee status updated successfully"})
+        return Response({"error": "Please provide either user_id or email"}, status=400)
 
 
 class UsersListAPIView(generics.ListAPIView):
     """API view to list all users. Only accessible by admin users."""
+
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (IsAdmin,)
@@ -59,6 +67,7 @@ class UsersListAPIView(generics.ListAPIView):
 
 class EmployeeListAPIView(generics.ListAPIView):
     """API view to list all employees. Only accessible by admin users."""
+
     queryset = User.objects.filter(is_employee=True)
     serializer_class = UserSerializer
     permission_classes = (IsAdmin,)
@@ -66,6 +75,7 @@ class EmployeeListAPIView(generics.ListAPIView):
 
 class UserTokenObtainPairView(TokenObtainPairView):
     """Custom view to obtain JWT token with additional user information."""
+
     serializer_class = UserTokenObtainPairSerializer
     permission_classes = [AllowAny]
 
